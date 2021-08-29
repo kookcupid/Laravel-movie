@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class MoviesController extends Controller
 {
@@ -35,7 +36,7 @@ class MoviesController extends Controller
             'popularMovies' =>$ $popularMovies,
             'nowPlayingMovies' =>$nowPlayingMovies,
             'genres' => $genres,
-        ]
+        ]);
 
     }
 
@@ -70,13 +71,13 @@ class MoviesController extends Controller
     {
 
         $Movies = Http::withToken(config('services.tmdb.token'))
-        ->get('https://api.themoviedb.org/3/movie/'.$id)
+        ->get('https://api.themoviedb.org/3/movie/'.$id.'?append_to_respons-credits,videos,images')
         ->json();
 
-        dump($Movie);
+        dump($movie);
 
         return view('show',[
-            'movie' => $Movie,
+            'movie' => $movie,
         ]);
     }
 
